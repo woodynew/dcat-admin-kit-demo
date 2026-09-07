@@ -1,0 +1,48 @@
+services:
+  php:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      target: application
+    environment:
+      APP_URL: ${DEMO_URL:-http://localhost:18085}
+    volumes:
+      - demo-data:/data
+    restart: unless-stopped
+    stop_grace_period: 30s
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/demo-healthcheck"]
+      start_period: 90s
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      target: web
+    ports:
+      - "${DEMO_BIND:-127.0.0.1}:${DEMO_PORT:-18085}:80"
+    depends_on:
+      php:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://127.0.0.1/up"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  demo-data:

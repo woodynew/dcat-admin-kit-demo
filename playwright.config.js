@@ -1,6 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 
-const baseURL = 'http://127.0.0.1:18084';
+const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://127.0.0.1:18084';
 const channel = process.env.PLAYWRIGHT_CHANNEL ?? (process.env.CI ? 'chromium' : 'chrome');
 const php = process.env.PHP_BINARY ?? 'php';
 
@@ -21,7 +21,7 @@ export default defineConfig({
         trace: 'retain-on-failure',
         screenshot: 'only-on-failure',
     },
-    webServer: {
+    webServer: process.env.PLAYWRIGHT_BASE_URL ? undefined : {
         command: `'${php.replaceAll("'", "'\\''")}' artisan serve --host=127.0.0.1 --port=18084`,
         url: baseURL,
         reuseExistingServer: !process.env.CI,

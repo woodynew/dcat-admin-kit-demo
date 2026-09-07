@@ -15,6 +15,16 @@
 
 具体依赖以 `composer.lock` 为准。Node.js 22 和 npm 仅用于浏览器测试，站点运行使用发布到 `public/vendor` 的 Dcat 资源，无需 npm 安装或 Vite 构建。
 
+## Docker 一键启动（推荐）
+
+克隆仓库后，无需在宿主机安装 PHP、Composer 或 Node：
+
+```bash
+docker compose up -d --build --wait
+```
+
+访问 <http://localhost:18085>。自动初始化 SQLite 和扩展，生成持久密钥，并启动 Nginx、PHP-FPM 与每小时重置调度器。重启和镜像重建保留数据卷；计划重置只恢复演示数据。端口、日志、更新及数据保留说明见 [docker/README.md](docker/README.md)。
+
 ## 本地安装
 
 准备 PHP 8.4、Composer 2，以及 Laravel 所需 PHP 扩展，包括 `pdo_sqlite`、`sqlite3`、`mbstring`、`xml`、`curl`、`fileinfo`。以下命令中的 `php` 和 Composer 均应使用 PHP 8.4。

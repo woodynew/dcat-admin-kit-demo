@@ -8,6 +8,30 @@ permissions:
   contents: read
 
 jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and initialize Docker demo
+        run: docker compose up -d --build --wait --wait-timeout 180
+      - name: Check HTTP and process health
+        run: |
+          curl --fail http://127.0.0.1:18085/up
+          curl --fail http://127.0.0.1:18085/ | grep -q '/demo/enter'
+          docker compose exec -T php supervisorctl -c /etc/supervisord.conf status
+          docker compose exec -T --user www-data php php artisan schedule:list
+      - name: Verify recreation preserves key and data
+        run: |
+          docker compose exec -T --user www-data php php docker/tests/persistence.php seed
+          docker compose up -d --force-recreate --wait --wait-timeout 180
+          docker compose exec -T --user www-data php php docker/tests/persistence.php verify
+      - name: Docker logs
+        if: failure()
+        run: docker compose logs --tail=200
+      - name: Stop test containers
+        if: always()
+        run: docker compose down
+
   php:
     runs-on: ubuntu-latest
     steps:

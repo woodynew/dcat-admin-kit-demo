@@ -3,12 +3,12 @@ import { test as base, expect } from '@playwright/test';
 // Catch uncaught JS errors (including child frames) and failed app/asset responses.
 // Browser console chatter such as favicon requests is not a page exception.
 const test = base.extend({
-    page: async ({ page }, use) => {
+    page: async ({ page, baseURL }, use) => {
         const failures = [];
         page.on('pageerror', error => failures.push(error.stack ?? error.message));
         page.on('response', response => {
             const url = new URL(response.url());
-            if (url.origin === 'http://127.0.0.1:18084'
+            if (url.origin === new URL(baseURL).origin
                 && url.pathname !== '/favicon.ico' && response.status() >= 400) {
                 failures.push(`${response.status()} ${response.request().method()} ${url.pathname}`);
             }
