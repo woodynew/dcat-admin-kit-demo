@@ -1,0 +1,36 @@
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\ServiceProvider;
+
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Register any application services.
+     */
+    public function register(): void
+    {
+        $features = array_fill_keys(array_keys(config('dcat-admin-kit.features', [])), false);
+        $request = $this->app['request'];
+        if ($request->is('admin/demo/preview', 'admin/demo/preview-form', 'admin/demo/preview-show/*')) {
+            $feature = $request->query('feature');
+            if (is_string($feature) && array_key_exists($feature, $features)) {
+                $features[$feature] = $request->query('enabled') === '1';
+            }
+        }
+        // All providers register before any provider boots; this precedes Kit's boot().
+        config(['dcat-admin-kit.features' => $features]);
+    }
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        RateLimiter::for('demo-login', fn (Request $request) => Limit::perMinute(10)->by($request->ip()));
+    }
+}

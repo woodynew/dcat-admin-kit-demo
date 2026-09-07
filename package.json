@@ -1,0 +1,16 @@
+{
+    "$schema": "https://www.schemastore.org/package.json",
+    "name": "dcat-admin-kit-demo",
+    "private": true,
+    "type": "module",
+    "engines": {
+        "node": ">=22"
+    },
+    "scripts": {
+        "test:browser": "playwright test",
+        "test:browser:report": "playwright show-report"
+    },
+    "devDependencies": {
+        "@playwright/test": "^1.63.0"
+    }
+}
