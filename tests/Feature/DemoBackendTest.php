@@ -256,6 +256,18 @@ class DemoBackendTest extends TestCase
         $this->assertGuardRejected('POST', 'demo/records', ['_file_' => 'avatar'], 403);
     }
 
+    public function test_locale_switch_allows_only_the_named_post_route_and_expected_fields(): void
+    {
+        $this->assertSame(302, $this->guardRequest('POST', 'kit/locale', ['locale' => 'en'])->getStatusCode());
+        $this->demoLogin();
+        $response = $this->guardRequest('POST', 'kit/locale', ['locale' => 'en', '_token' => 'test']);
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertSame(['locale' => 'en', '_token' => 'test'], json_decode($response->getContent(), true));
+        $this->assertGuardRejected('GET', 'kit/locale', ['locale' => 'en'], 403);
+        $this->assertGuardRejected('POST', 'kit/locale', ['locale' => 'en', 'role_id' => 1], 403);
+        $this->assertGuardRejected('POST', 'kit/other', ['locale' => 'en'], 403);
+    }
+
     public function test_form_allowlist_canonicalizes_lazy_payload_and_return_url(): void
     {
         $this->demoLogin();
@@ -370,6 +382,8 @@ class DemoBackendTest extends TestCase
         $route = new RoutingRoute([$method], 'admin/'.$path, fn () => null);
         if (str_starts_with($path, 'dcat-api/')) {
             $route->name(admin_api_route_name(substr($path, strlen('dcat-api/'))));
+        } elseif ($path === 'kit/locale') {
+            $route->name(admin_route_name('kit.locale'));
         }
         $request->setRouteResolver(fn () => $route);
 

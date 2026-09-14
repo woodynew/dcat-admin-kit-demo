@@ -1,4 +1,6 @@
 import { test as base, expect } from '@playwright/test';
+import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
 
 // Catch uncaught JS errors (including child frames) and failed app/asset responses.
 // Browser console chatter such as favicon requests is not a page exception.
@@ -165,6 +167,46 @@ test('共享记录通过顶部提交创建、编辑，并从真实复制按钮�
     await page.getByTestId('live-example').getByRole('link', { name: /返回$/ }).click();
     await expect(page).toHaveURL(/\/admin\/demo\/records$/);
     await expect(recordRow(page, code)).toBeVisible();
+});
+
+test('表单顶部按钮保持原生配色与可读对比度', async ({ page }) => {
+    const cssRevision = createHash('sha256').update(readFileSync(new URL('../../public/demo/demo.css', import.meta.url))).digest('hex').slice(0, 12);
+    await enterDemo(page);
+    await page.goto('/admin/demo/records');
+    const editPath = await page.locator('#grid-table tbody tr').first()
+        .getByRole('link', { name: /编辑/ }).getAttribute('href');
+
+    for (const path of ['/admin/demo/records/create', editPath]) {
+        await page.goto(path);
+        const stylesheet = page.locator('link[rel="stylesheet"][href*="/demo/demo.css"]');
+        await expect(stylesheet).toHaveCount(1);
+        expect(new URL(await stylesheet.getAttribute('href'), page.url()).searchParams.get('rev')).toBe(cssRevision);
+        const example = page.getByTestId('live-example');
+        for (const label of ['提交', '返回', '列表', ...(path === editPath ? ['复制'] : [])]) {
+            await expect(example.getByRole('link', { name: new RegExp(`${label}$`) })).toBeVisible();
+        }
+        const nativeColor = await example.locator('button.submit').first()
+            .evaluate(button => getComputedStyle(button).color);
+        const buttons = example.locator('a.btn-primary');
+        expect(await buttons.count()).toBeGreaterThanOrEqual(3);
+        for (const button of await buttons.all()) {
+            for (const state of ['normal', 'hover', 'focus']) {
+                await page.locator('h1').hover();
+                if (state === 'hover') await button.hover();
+                if (state === 'focus') await button.focus();
+                await expect(button).toHaveCSS('color', nativeColor);
+                await expect.poll(() => button.evaluate(element => {
+                    const style = getComputedStyle(element);
+                    const luminance = color => color.match(/[\d.]+/g).slice(0, 3).map(value => {
+                        value = Number(value) / 255;
+                        return value <= 0.04045 ? value / 12.92 : Math.pow((value + 0.055) / 1.055, 2.4);
+                    }).reduce((sum, value, index) => sum + value * [0.2126, 0.7152, 0.0722][index], 0);
+                    const values = [luminance(style.color), luminance(style.backgroundColor)].sort((a, b) => b - a);
+                    return (values[0] + 0.05) / (values[1] + 0.05);
+                })).toBeGreaterThanOrEqual(4.5);
+            }
+        }
+    }
 });
 
 test('工具栏通知和行内余额弹窗真实写入并在刷新后保留', async ({ page }) => {

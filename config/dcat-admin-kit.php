@@ -9,4 +9,5 @@ return ['features' => [
     'back_to_top' => false,
     'grid_assets' => false,
     'global_styles' => false,
+    'locale_switcher' => true,
 ]];

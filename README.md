@@ -1,6 +1,6 @@
 # Dcat Admin Kit Demo
 
-基于 Laravel 的中文交互演示项目，展示 Dcat Admin Kit 的列显示器、表单、操作工具及真实 iframe 多标签页。项目仓库：[woodynew/dcat-admin-kit-demo](https://github.com/woodynew/dcat-admin-kit-demo)。
+基于 Laravel 的交互演示项目，展示 Dcat Admin Kit 的列显示器、表单、操作工具及真实 iframe 多标签页。当前开发代码支持简体中文、繁體中文和 English 的后台界面切换。项目仓库：[woodynew/dcat-admin-kit-demo](https://github.com/woodynew/dcat-admin-kit-demo)。
 
 ## 技术版本
 
@@ -9,13 +9,16 @@
 | PHP | 8.4 |
 | Laravel | 12.69.1 |
 | woodynew/dcat-laravel-admin | 2.2.4 |
-| woodynew/dcat-admin-kit | 0.1.0 |
-| woodynew/z-dcat-iframe-tab | 1.2.1 |
+| woodynew/dcat-admin-kit | 0.2.0 |
+| woodynew/z-dcat-iframe-tab | 1.3.0 |
+| Demo 自身版本 | 0.2.0（与 Kit 同线） |
 | 数据库 | SQLite |
 
 具体依赖以 `composer.lock` 为准。Node.js 22 和 npm 仅用于浏览器测试，站点运行使用发布到 `public/vendor` 的 Dcat 资源，无需 npm 安装或 Vite 构建。
 
 ## Docker 一键启动（推荐）
+
+常规安装与 Docker 构建使用 Packagist 上已发布的 Kit `0.2.0`、iframe `1.3.0`。仓库内的 `compose.override.yaml`、`composer.local.*` 等本地文件只用于加载未发布源码做联调，不属于正式安装路径；两者的区别见[多语言开发指南](docs/localization.md)。
 
 克隆仓库后，无需在宿主机安装 PHP、Composer 或 Node：
 
@@ -63,7 +66,13 @@ php artisan serve --host=127.0.0.1 --port=18084
 
 演示包含两处应用内集成适配：Dcat 基础包 2.2.4 会将 `AdminGridHrefTool` 输出为带 `href` 的按钮，`DemoExamples::linkTool` 使用小型匿名子类渲染原生链接，页面可查看实际源码；iframe Provider 子类仅在 iframe 请求标记下启用紧凑布局，保留扩展包提供的真实标签容器。上述适配位于本应用，未修改已发布的依赖包。
 
-当前 Kit 0.1.0 与基座 2.2.4 组合下，自定义二维码宽高未按传入值生效，演示使用已验证的默认 200×200 尺寸。该上游问题未在 Demo 中重写组件修复。
+在 Kit 与基座 2.2.4 的组合下，自定义二维码宽高未按传入值生效，演示使用已验证的默认 200×200 尺寸。该上游问题未在 Demo 中重写组件修复。
+
+## 多语言开发
+
+进入后台后，通过右上角选择框切换语言。Demo 已启用 `features.locale_switcher`，选择保存在各访客 Session 中；菜单、导航、页面标题、字段、组件说明、提示及 iframe 菜单跟随切换。共享记录、日志、固定转义测试样例和显示的实际源码保留原文，公开欢迎页目前为中文。
+
+应用文案位于 `resources/translations/{zh_CN,zh_TW,en}.json`。新增页面和组件示例时使用 Laravel `__()`；菜单在渲染时翻译，不改数据库中的共享菜单名称。详细示例、白名单接入、样式要求和浏览器回归见[多语言开发指南](docs/localization.md)。
 
 ## 重置与限制
 

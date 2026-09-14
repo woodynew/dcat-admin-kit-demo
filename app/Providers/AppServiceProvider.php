@@ -14,6 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->loadJsonTranslationsFrom(resource_path('translations'));
         $features = array_fill_keys(array_keys(config('dcat-admin-kit.features', [])), false);
         $request = $this->app['request'];
         if ($request->is('admin/demo/preview', 'admin/demo/preview-form', 'admin/demo/preview-show/*')) {
@@ -22,6 +23,8 @@ class AppServiceProvider extends ServiceProvider
                 $features[$feature] = $request->query('enabled') === '1';
             }
         }
+        // Locale selection stays available across pages and feature previews.
+        $features['locale_switcher'] = (bool) config('dcat-admin-kit.features.locale_switcher', false);
         // All providers register before any provider boots; this precedes Kit's boot().
         config(['dcat-admin-kit.features' => $features]);
     }
@@ -31,6 +34,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        view()->composer('admin::partials.navbar-user-panel', function ($view) {
+            $user = $view->getData()['user'] ?? null;
+            if ($user && $user->username === 'demo' && $user->name === '演示访客') {
+                // Localize only the demo's display label, never the persisted user.
+                $displayUser = clone $user;
+                $displayUser->name = __('演示访客');
+                $view->with('user', $displayUser);
+            }
+        });
         RateLimiter::for('demo-login', fn (Request $request) => Limit::perMinute(10)->by($request->ip()));
     }
 }

@@ -13,7 +13,7 @@ class DemoController extends Controller
 {
     public function overview(Content $content)
     {
-        return $content->title('演示概览')->description('Dcat Admin Kit · 交互式组件手册')
+        return $content->title(__('演示概览'))->description(__('Dcat Admin Kit · 交互式组件手册'))
             ->body(view('demo.overview', [
                 'lastResetAt' => DemoState::query()->where('key', 'last_reset_at')->value('value'),
                 'recordCount' => DemoRecord::query()->count(),
@@ -23,30 +23,30 @@ class DemoController extends Controller
 
     public function columns(Content $content)
     {
-        return $this->page($content, 'columns', '列显示器',
-            '点击二维码、复制链接、展开长文本。中文、引号、特殊字符与空值都在同一张真实 Grid 中。',
+        return $this->page($content, 'columns', __('列显示器'),
+            __('点击二维码、复制链接、展开长文本。中文、引号、特殊字符与空值都在同一张真实 Grid 中。'),
             DemoExamples::columnsGrid());
     }
 
     public function actions(Content $content)
     {
-        return $this->page($content, 'actions', '操作与工具',
+        return $this->page($content, 'actions', __('操作与工具'),
             request()->query('iframe') === '1'
-                ? '当前为紧凑子页面。点击「标签详情」在父容器打开记录，再次点击同一记录复用标签。'
-                : '试着发布一条通知、增加演示余额或打开记录详情。「标签详情」在普通页面中直接跳转。',
+                ? __('当前为紧凑子页面。点击「标签详情」在父容器打开记录，再次点击同一记录复用标签。')
+                : __('试着发布一条通知、增加演示余额或打开记录详情。「标签详情」在普通页面中直接跳转。'),
             DemoExamples::recordsGrid(), true);
     }
 
     public function widgets(Content $content)
     {
-        return $this->page($content, 'widgets', '组件与汇总',
-            '两张独立的 PostTable 分别呈现当前记录与最新日志，所有内容来自共享演示数据。',
+        return $this->page($content, 'widgets', __('组件与汇总'),
+            __('两张独立的 PostTable 分别呈现当前记录与最新日志，所有内容来自共享演示数据。'),
             DemoExamples::postTable(), true);
     }
 
     public function features(Content $content)
     {
-        return $content->title('全局特性')->description('8 个开关 · 独立请求对照')
+        return $content->title(__('全局特性'))->description(__('8 个开关 · 独立请求对照'))
             ->body(view('demo.features', ['features' => DemoExamples::features(),
                 'recordId' => DemoRecord::query()->orderBy('id')->value('id')]));
     }
@@ -81,8 +81,8 @@ class DemoController extends Controller
         abort_unless(is_string($feature) && isset(DemoExamples::features()[$feature]), 404);
         $enabled = request()->query('enabled') === '1';
 
-        return $content->title('特性对照 · '.DemoExamples::features()[$feature][0])
-            ->description($enabled ? '当前请求：开启' : '当前请求：关闭')
+        return $content->title(__('特性对照 · ').DemoExamples::features()[$feature][0])
+            ->description($enabled ? __('当前请求：开启') : __('当前请求：关闭'))
             ->body(view('demo.preview', compact('feature', 'enabled', 'example') + [
                 'features' => DemoExamples::features(),
                 'recordId' => DemoRecord::query()->orderBy('id')->value('id'),
@@ -91,7 +91,7 @@ class DemoController extends Controller
 
     private function page(Content $content, string $section, string $title, string $description, $example, bool $withLogs = false)
     {
-        return $content->title($title)->description('可操作示例 · 参数说明 · 真实源码')
+        return $content->title($title)->description(__('可操作示例 · 参数说明 · 真实源码'))
             ->body(view('demo.page', compact('section', 'title', 'description', 'example', 'withLogs')));
     }
 }

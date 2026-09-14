@@ -58,9 +58,9 @@
                 try { await navigator.clipboard.writeText(source.textContent); }
                 catch (_) { fallbackCopy(source.textContent); }
             } else { fallbackCopy(source.textContent); }
-            result.textContent = '源码已复制';
+            result.textContent = button.dataset.copySuccess;
         } catch (_) {
-            result.textContent = '自动复制未完成，请选中源码手动复制';
+            result.textContent = button.dataset.copyFailed;
         }
     });
 

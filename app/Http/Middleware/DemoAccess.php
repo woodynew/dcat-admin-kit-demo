@@ -44,7 +44,13 @@ class DemoAccess
         abort_if($request->allFiles() !== [] || $request->hasAny(['_file_', '_file_del_', '_upload_', '_uploader_', '_relation']), 403, '演示不支持上传或文件操作。');
         abort_if(strlen($request->getContent()) > 65536 || strlen((string) $request->getQueryString()) > 8192, 413);
 
-        if ($path === 'auth/logout') {
+        if ($path === 'kit/locale') {
+            abort_unless($request->isMethod('POST') && $request->routeIs(admin_route_name('kit.locale')), 403);
+            $this->allowFields($request, ['locale', '_token']);
+
+            // This changes only the visitor's session; do not attach CRUD metadata.
+            return $next($request);
+        } elseif ($path === 'auth/logout') {
             abort_unless($request->isMethod('GET'), 403);
         } elseif ($path === 'dcat-api/form') {
             abort_unless($request->isMethod('POST') && $request->routeIs(admin_api_route_name('form')), 403);

@@ -38,55 +38,55 @@ final class DemoExamples
     public static function features(): array
     {
         return [
-            'grid_defaults' => ['表格默认行为', '隐藏查看、删除、批量删除和行选择器；工具按钮使用实心样式。', 'preview'],
-            'form_defaults' => ['表单默认行为', '隐藏查看、删除、返回列表及继续查看、继续编辑选项。', 'preview-form'],
-            'show_defaults' => ['详情默认行为', '隐藏详情页的编辑与删除按钮。', 'preview-show'],
-            'right_side_filter' => ['右侧筛选器', '点击「筛选」查看收起的右侧滑出面板。', 'preview'],
-            'top_form_tools' => ['表单顶部工具', '顶部出现原生「返回」「提交」工具；提交会实际保存。', 'preview-form'],
-            'back_to_top' => ['回到顶部', '向下滚动超过半屏，右下角出现回到顶部按钮。', 'preview'],
-            'grid_assets' => ['表格滚动增强', '固定表头样式、表格尺寸调整与本地 NiceScroll 横向滚动条。', 'preview'],
-            'global_styles' => ['全局布局样式', '观察侧栏、导航、内容区、表格及页脚的 Kit 样式变化。', 'preview'],
+            'grid_defaults' => [__('表格默认行为'), __('隐藏查看、删除、批量删除和行选择器；工具按钮使用实心样式。'), 'preview'],
+            'form_defaults' => [__('表单默认行为'), __('隐藏查看、删除、返回列表及继续查看、继续编辑选项。'), 'preview-form'],
+            'show_defaults' => [__('详情默认行为'), __('隐藏详情页的编辑与删除按钮。'), 'preview-show'],
+            'right_side_filter' => [__('右侧筛选器'), __('点击「筛选」查看收起的右侧滑出面板。'), 'preview'],
+            'top_form_tools' => [__('表单顶部工具'), __('顶部出现原生「返回」「提交」工具；提交会实际保存。'), 'preview-form'],
+            'back_to_top' => [__('回到顶部'), __('向下滚动超过半屏，右下角出现回到顶部按钮。'), 'preview'],
+            'grid_assets' => [__('表格滚动增强'), __('固定表头样式、表格尺寸调整与本地 NiceScroll 横向滚动条。'), 'preview'],
+            'global_styles' => [__('全局布局样式'), __('观察侧栏、导航、内容区、表格及页脚的 Kit 样式变化。'), 'preview'],
         ];
     }
 
     public static function components(): array
     {
         return [
-            'CopyQrCodeLink' => ['columns', '二维码与复制', 'copyColumn', 'formatter=null|Closure|string；display=null|Closure；width=200；height=200。本例使用默认 200×200 图片。短标签不改变复制的完整内容。', 'column-displayers.md'],
-            'MultiRow' => ['columns', '多字段合并', 'multiRowColumn', 'columns 为字段数组；formatter 接收字段名并绑定当前行。字段使用中文翻译，超过 30 字显示提示。', 'column-displayers.md'],
-            'TextAlert' => ['columns', '长文本弹窗', 'alertColumn', 'limit=15，before=1 保留开头；0 保留末尾。本例仅使用固定纯文本，Layer 会解释 HTML，不能直接传入用户输入。', 'column-displayers.md'],
-            'AfterLimit' => ['columns', '尾部截取与展开', 'afterColumn', 'limit=100，end="..."；本例保留末尾 24 字。点击双箭头展开、收起；标量内容自动转义。', 'column-displayers.md'],
-            'TextActions' => ['actions', '文字行操作', 'textActions', 'Grid::setActionClass(TextActions::class) 仅作用于此表格，保留 Dcat 原生查看、编辑、删除行为。', 'actions-and-tools.md'],
-            'AdminGridHrefTool' => ['actions', '链接工具', 'linkTool', 'title 为按钮标题，href 为站内目标 URL。Dcat 2.2.4 的 AbstractTool 输出 button，本例在应用内覆写 html 为原生链接，让工具真正跳转到创建页。', 'actions-and-tools.md'],
-            'GridFormTool' => ['actions', '顶部通知表单', 'noticeTool', 'title、action、formClass；普通 Widgets Form 从 data()->get("action") 读取操作标识。提交后查看下方通知日志。', 'actions-and-tools.md'],
-            'GridModalRowAction' => ['actions', '行内余额弹窗', 'balanceAction', 'title、action、formClass、params；传入当前记录 id，LazyWidget 从 payload 读取 id/action。提交后刷新余额和日志。', 'actions-and-tools.md'],
-            'OpenIFrameTab' => ['actions', '标签页与普通跳转', 'iframeAction', 'toUrl 必填；tabUrl 决定复用标识；title 为标签标题。普通操作页直接跳转，标签页实验室中打开/复用真实 iframe 标签。', 'actions-and-tools.md'],
-            'Copy' => ['records', '复制为新记录', 'copyTool', '构造参数为创建页 URL。仅预填标题、链接、描述、状态；重新生成唯一编码，余额从 0 开始。点击复制不会立即写入。', 'actions-and-tools.md'],
-            'TopGoBack' => ['records', '顶部返回', 'topBackTool', '无参数；iframe 环境优先返回活动页，普通页面使用浏览器历史。请先从记录列表进入表单。', 'actions-and-tools.md'],
-            'TopSubmit' => ['records', '顶部提交', 'topSubmitTool', '无参数；触发同一张 Dcat 表单内原生 button.submit，执行相同验证与真实保存。', 'actions-and-tools.md'],
-            'AdminFormUtil' => ['records', '请求形态判断', 'formEvents', 'isCreatingEditing($form, ["title", "status"])；完整提交记录 true，列表快捷状态更新记录 false。仅判断请求形态，授权由中间件与服务完成。', 'widgets-and-support.md'],
-            'PostTable' => ['widgets', '响应式汇总表', 'postTable', 'header 为表头，data 为二维行数据。多个实例使用独立 DOM ID。本例对所有动态单元格先执行 e()。', 'widgets-and-support.md'],
+            'CopyQrCodeLink' => ['columns', __('二维码与复制'), 'copyColumn', __('formatter=null|Closure|string；display=null|Closure；width=200；height=200。本例使用默认 200×200 图片。短标签不改变复制的完整内容。'), 'column-displayers.md'],
+            'MultiRow' => ['columns', __('多字段合并'), 'multiRowColumn', __('columns 为字段数组；formatter 接收字段名并绑定当前行。字段使用中文翻译，超过 30 字显示提示。'), 'column-displayers.md'],
+            'TextAlert' => ['columns', __('长文本弹窗'), 'alertColumn', __('limit=15，before=1 保留开头；0 保留末尾。本例仅使用固定纯文本，Layer 会解释 HTML，不能直接传入用户输入。'), 'column-displayers.md'],
+            'AfterLimit' => ['columns', __('尾部截取与展开'), 'afterColumn', __('limit=100，end="..."；本例保留末尾 24 字。点击双箭头展开、收起；标量内容自动转义。'), 'column-displayers.md'],
+            'TextActions' => ['actions', __('文字行操作'), 'textActions', __('Grid::setActionClass(TextActions::class) 仅作用于此表格，保留 Dcat 原生查看、编辑、删除行为。'), 'actions-and-tools.md'],
+            'AdminGridHrefTool' => ['actions', __('链接工具'), 'linkTool', __('title 为按钮标题，href 为站内目标 URL。Dcat 2.2.4 的 AbstractTool 输出 button，本例在应用内覆写 html 为原生链接，让工具真正跳转到创建页。'), 'actions-and-tools.md'],
+            'GridFormTool' => ['actions', __('顶部通知表单'), 'noticeTool', __('title、action、formClass；普通 Widgets Form 从 data()->get("action") 读取操作标识。提交后查看下方通知日志。'), 'actions-and-tools.md'],
+            'GridModalRowAction' => ['actions', __('行内余额弹窗'), 'balanceAction', __('title、action、formClass、params；传入当前记录 id，LazyWidget 从 payload 读取 id/action。提交后刷新余额和日志。'), 'actions-and-tools.md'],
+            'OpenIFrameTab' => ['actions', __('标签页与普通跳转'), 'iframeAction', __('toUrl 必填；tabUrl 决定复用标识；title 为标签标题。普通操作页直接跳转，标签页实验室中打开/复用真实 iframe 标签。'), 'actions-and-tools.md'],
+            'Copy' => ['records', __('复制为新记录'), 'copyTool', __('构造参数为创建页 URL。仅预填标题、链接、描述、状态；重新生成唯一编码，余额从 0 开始。点击复制不会立即写入。'), 'actions-and-tools.md'],
+            'TopGoBack' => ['records', __('顶部返回'), 'topBackTool', __('无参数；iframe 环境优先返回活动页，普通页面使用浏览器历史。请先从记录列表进入表单。'), 'actions-and-tools.md'],
+            'TopSubmit' => ['records', __('顶部提交'), 'topSubmitTool', __('无参数；触发同一张 Dcat 表单内原生 button.submit，执行相同验证与真实保存。'), 'actions-and-tools.md'],
+            'AdminFormUtil' => ['records', __('请求形态判断'), 'formEvents', __('isCreatingEditing($form, ["title", "status"])；完整提交记录 true，列表快捷状态更新记录 false。仅判断请求形态，授权由中间件与服务完成。'), 'widgets-and-support.md'],
+            'PostTable' => ['widgets', __('响应式汇总表'), 'postTable', __('header 为表头，data 为二维行数据。多个实例使用独立 DOM ID。本例对所有动态单元格先执行 e()。'), 'widgets-and-support.md'],
         ];
     }
 
     public static function copyColumn(Grid $grid): void
     {
-        $grid->column('url', '链接 / 复制完整内容')->copyqrcodelink();
+        $grid->column('url', __('链接 / 复制完整内容'))->copyqrcodelink();
     }
 
     public static function multiRowColumn(Grid $grid): void
     {
-        $grid->column('summary', '紧凑信息')->multirow(['title', 'code']);
+        $grid->column('summary', __('紧凑信息'))->multirow(['title', 'code']);
     }
 
     public static function alertColumn(Grid $grid): void
     {
-        $grid->column('safe_notice', '固定纯文本说明')->textalert(16, 1);
+        $grid->column('safe_notice', __('固定纯文本说明'))->textalert(16, 1);
     }
 
     public static function afterColumn(Grid $grid): void
     {
-        $grid->column('description', '长文本 / 展开')->afterlimit(24, '…');
+        $grid->column('description', __('长文本 / 展开'))->afterlimit(24, '…');
     }
 
     public static function columnsGrid(): Grid
@@ -99,7 +99,7 @@ final class DemoExamples
                 ['id' => 3, 'title' => '空值边界', 'code' => 'KIT-EMPTY', 'url' => null, 'description' => '', 'safe_notice' => ''],
                 ['id' => 4, 'title' => '短文本边界', 'code' => 'KIT-SHORT', 'url' => 'https://example.com', 'description' => '无需截断', 'safe_notice' => '简短说明'],
             ]));
-            $grid->column('id', '样例');
+            $grid->column('id', __('样例'));
             self::copyColumn($grid);
             self::multiRowColumn($grid);
             self::alertColumn($grid);
@@ -120,7 +120,7 @@ final class DemoExamples
     public static function linkTool(Grid $grid): void
     {
         $grid->tools(function (Grid\Tools $tools) {
-            $tools->append(new class('创建一条记录', admin_url('demo/records/create')) extends AdminGridHrefTool
+            $tools->append(new class(__('创建一条记录'), admin_url('demo/records/create')) extends AdminGridHrefTool
             {
                 protected function html()
                 {
@@ -137,14 +137,14 @@ final class DemoExamples
     public static function noticeTool(Grid $grid): void
     {
         $grid->tools(function (Grid\Tools $tools) {
-            $tools->append(GridFormTool::make('发布演示通知', 'notice', BulkNoticeForm::class));
+            $tools->append(GridFormTool::make(__('发布演示通知'), 'notice', BulkNoticeForm::class));
         });
     }
 
     public static function balanceAction(Grid $grid): void
     {
         $grid->actions(function (Grid\Displayers\Actions $actions) {
-            $actions->append(GridModalRowAction::make('增加余额', 'balance', BalanceForm::class, [
+            $actions->append(GridModalRowAction::make(__('增加余额'), 'balance', BalanceForm::class, [
                 'id' => $actions->getKey(),
             ]));
         });
@@ -157,10 +157,10 @@ final class DemoExamples
             if (request()->query('iframe') === '1') {
                 $url .= '?iframe=1';
             }
-            $actions->append(new OpenIFrameTab('标签详情', [
+            $actions->append(new OpenIFrameTab(__('标签详情'), [
                 'toUrl' => $url,
                 'tabUrl' => $url,
-                'title' => '记录 #'.$actions->getKey(),
+                'title' => __('记录 #').$actions->getKey(),
             ]));
         });
     }
@@ -171,15 +171,15 @@ final class DemoExamples
             $grid->setResource(admin_url('demo/records'));
             $grid->model()->orderByDesc('id');
             $grid->paginate(8);
-            $grid->column('id', '编号')->sortable();
-            $grid->column('title', '标题')->display(fn ($value) => e($value));
-            $grid->column('code', '唯一编码')->display(fn ($value) => e($value));
-            $grid->column('status', '启用状态')->switch('', true);
-            $grid->column('balance', '演示余额')->display(fn ($value) => e($value));
-            $grid->column('updated_at', '更新时间');
+            $grid->column('id', __('编号'))->sortable();
+            $grid->column('title', __('标题'))->display(fn ($value) => e($value));
+            $grid->column('code', __('唯一编码'))->display(fn ($value) => e($value));
+            $grid->column('status', __('启用状态'))->switch('', true);
+            $grid->column('balance', __('演示余额'))->display(fn ($value) => e($value));
+            $grid->column('updated_at', __('更新时间'));
             $grid->filter(function (Grid\Filter $filter) {
-                $filter->like('title', '标题');
-                $filter->equal('status', '启用状态')->select([1 => '启用', 0 => '停用']);
+                $filter->like('title', __('标题'));
+                $filter->equal('status', __('启用状态'))->select([1 => __('启用'), 0 => __('停用')]);
             });
             if ($tools) {
                 self::textActions($grid);
@@ -198,9 +198,9 @@ final class DemoExamples
         // Native fixed-table layout supplies the .table-main required by Kit 0.1.0.
         // Zero fixed columns keeps one real table; both preview states use this layout.
         $grid->fixColumns(0, 0);
-        $grid->column('url', '完整链接')->display(fn ($value) => e($value))
+        $grid->column('url', __('完整链接'))->display(fn ($value) => e($value))
             ->setAttributes(['style' => 'min-width: 360px']);
-        $grid->column('description', '完整描述')->display(fn ($value) => e($value))
+        $grid->column('description', __('完整描述'))->display(fn ($value) => e($value))
             ->setAttributes(['style' => 'min-width: 520px']);
     }
 
@@ -252,7 +252,7 @@ final class DemoExamples
                     if (is_string($url) && $url !== '') {
                         $url .= (str_contains($url, '?') ? '&' : '?').'iframe=1';
 
-                        return $form->response()->success('保存成功')->redirect($url);
+                        return $form->response()->success(__('保存成功'))->redirect($url);
                     }
                 }
             }
@@ -267,13 +267,13 @@ final class DemoExamples
                 $form->setResource(url(request()->path()));
                 $form->setCurrentUrl(admin_url('demo/records?iframe=1'));
             }
-            $form->text('title', '标题')->required()->rules('required|string|max:120')->default($defaults['title'] ?? '');
-            $form->text('code', '唯一编码')->required()->rules('required|string|max:40|regex:/^[A-Za-z0-9_-]+$/')
-                ->default($defaults['code'] ?? '')->help('编码必须唯一；复制为新记录时自动重新生成。');
-            $form->url('url', '链接')->rules('nullable|url:http,https|max:500')->default($defaults['url'] ?? '');
-            $form->textarea('description', '描述')->rules('nullable|string|max:2000|not_regex:/[<>]/')->rows(5)
-                ->default($defaults['description'] ?? '')->help('最多 2,000 字，纯文本，不接受 HTML 标签。');
-            $form->switch('status', '启用状态')->default($defaults['status'] ?? 1);
+            $form->text('title', __('标题'))->required()->rules('required|string|max:120')->default($defaults['title'] ?? '');
+            $form->text('code', __('唯一编码'))->required()->rules('required|string|max:40|regex:/^[A-Za-z0-9_-]+$/')
+                ->default($defaults['code'] ?? '')->help(__('编码必须唯一；复制为新记录时自动重新生成。'));
+            $form->url('url', __('链接'))->rules('nullable|url:http,https|max:500')->default($defaults['url'] ?? '');
+            $form->textarea('description', __('描述'))->rules('nullable|string|max:2000|not_regex:/[<>]/')->rows(5)
+                ->default($defaults['description'] ?? '')->help(__('最多 2,000 字，纯文本，不接受 HTML 标签。'));
+            $form->switch('status', __('启用状态'))->default($defaults['status'] ?? 1);
             if ($tools) {
                 self::copyTool($form);
                 self::topBackTool($form);
@@ -287,15 +287,15 @@ final class DemoExamples
     {
         return Show::make($id, new DemoRecordRepository, function (Show $show) {
             $show->setResource(admin_url('demo/records'));
-            $show->field('id', '编号');
-            $show->field('title', '标题')->as(fn ($value) => e($value));
-            $show->field('code', '唯一编码')->as(fn ($value) => e($value));
-            $show->field('url', '链接')->as(fn ($value) => e($value));
-            $show->field('description', '描述')->as(fn ($value) => e($value));
-            $show->field('status', '启用状态')->as(fn ($value) => $value ? '启用' : '停用');
-            $show->field('balance', '演示余额');
-            $show->field('created_at', '创建时间');
-            $show->field('updated_at', '更新时间');
+            $show->field('id', __('编号'));
+            $show->field('title', __('标题'))->as(fn ($value) => e($value));
+            $show->field('code', __('唯一编码'))->as(fn ($value) => e($value));
+            $show->field('url', __('链接'))->as(fn ($value) => e($value));
+            $show->field('description', __('描述'))->as(fn ($value) => e($value));
+            $show->field('status', __('启用状态'))->as(fn ($value) => $value ? __('启用') : __('停用'));
+            $show->field('balance', __('演示余额'));
+            $show->field('created_at', __('创建时间'));
+            $show->field('updated_at', __('更新时间'));
         });
     }
 
@@ -304,10 +304,10 @@ final class DemoExamples
         $rows = DemoRecord::query()->orderByDesc('id')->limit(6)->get()
             ->map(fn (DemoRecord $record) => [
                 e($record->title), e($record->code), e($record->balance),
-                e($record->status ? '启用' : '停用'),
+                e($record->status ? __('启用') : __('停用')),
             ])->all();
 
-        return new PostTable(['标题', '编码', '演示余额', '状态'], $rows);
+        return new PostTable([__('标题'), __('编码'), __('演示余额'), __('状态')], $rows);
     }
 
     public static function logs(): PostTable
@@ -317,7 +317,7 @@ final class DemoExamples
                 e($log->created_at), e($log->action), e($log->demo_record_id ?? '—'), e($log->message),
             ])->all();
 
-        return new PostTable(['时间', '操作', '记录', '结果 / 消息'], $rows);
+        return new PostTable([__('时间'), __('操作'), __('记录'), __('结果 / 消息')], $rows);
     }
 
     public static function source(string $method, string $class = self::class): string
