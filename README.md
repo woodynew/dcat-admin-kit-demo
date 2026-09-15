@@ -2,23 +2,15 @@
 
 基于 Laravel 的交互演示项目，展示 Dcat Admin Kit 的列显示器、表单、操作工具及真实 iframe 多标签页。当前开发代码支持简体中文、繁體中文和 English 的后台界面切换。项目仓库：[woodynew/dcat-admin-kit-demo](https://github.com/woodynew/dcat-admin-kit-demo)。
 
-## 技术版本
+## 运行环境
 
-| 组件 | 当前锁定基线 |
-| --- | --- |
-| PHP | 8.4 |
-| Laravel | 12.69.1 |
-| woodynew/dcat-laravel-admin | 2.2.4 |
-| woodynew/dcat-admin-kit | 0.2.0 |
-| woodynew/z-dcat-iframe-tab | 1.3.0 |
-| Demo 自身版本 | 0.2.0（与 Kit 同线） |
-| 数据库 | SQLite |
+演示站要求 PHP 8.4 与 Laravel 12，使用单个 SQLite 数据库。
 
-具体依赖以 `composer.lock` 为准。Node.js 22 和 npm 仅用于浏览器测试，站点运行使用发布到 `public/vendor` 的 Dcat 资源，无需 npm 安装或 Vite 构建。
+依赖包（`woodynew/dcat-laravel-admin`、`woodynew/dcat-admin-kit`、`woodynew/z-dcat-iframe-tab`）的版本约束见 `composer.json`，实际锁定版本见 `composer.lock`。Node.js 和 npm 仅用于浏览器测试（版本要求见 `package.json` 的 `engines`），站点运行使用发布到 `public/vendor` 的 Dcat 资源，无需 npm 安装或 Vite 构建。
 
 ## Docker 一键启动（推荐）
 
-常规安装与 Docker 构建使用 Packagist 上已发布的 Kit `0.2.0`、iframe `1.3.0`。仓库内的 `compose.override.yaml`、`composer.local.*` 等本地文件只用于加载未发布源码做联调，不属于正式安装路径；两者的区别见[多语言开发指南](docs/localization.md)。
+常规安装与 Docker 构建都使用 Packagist 上已发布的正式版本（依赖约束见 `composer.json`）。仓库内的 `compose.override.yaml`、`composer.local.*` 等本地文件只用于加载未发布源码做联调，不属于正式安装路径；两者的区别见[多语言开发指南](docs/localization.md)。
 
 克隆仓库后，无需在宿主机安装 PHP、Composer 或 Node：
 

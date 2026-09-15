@@ -6,7 +6,7 @@
 
 共享记录、日志、用于验证中文与特殊字符的固定样例、Reflection 提取的实际源码保留原文。公开欢迎页目前为中文。此能力不包含业务数据的多语言存储或自动翻译。
 
-Demo 依赖已发布版本：`composer.lock` 锁定 Kit `0.2.0`（`598abd5`）和 iframe `1.3.0`（`d3fb74e`），多语言能力自这两个版本起提供。Demo 自身版本为 `0.2.0`，与 Kit 保持同一条版本线。
+Demo 依赖 Packagist 上已发布的 Kit 与 iframe，锁定的版本以 `composer.lock` 为准；多语言能力由这两个包提供。
 
 Git 忽略的本地覆盖文件仍可挂载同级源码做联调；此时 `vendor` 中的代码可能与锁文件版本不同，不要把锁文件版本号、宿主机 `vendor`、Docker 容器内加载的代码视为同一个状态。
 
@@ -89,7 +89,7 @@ Dcat 会为扩展路由自动加名称前缀。扩展声明使用相对名称 `k
 
 ## 本地源码联调
 
-本机的 `compose.override.yaml`、`composer.local.*`、`docker/local-kit.ini` 和 `LOCAL_KIT.md` 为忽略的本地文件，不会随普通提交或克隆自动带走。正式依赖已随 Kit `0.2.0`、iframe `1.3.0` 升级；继续开发新功能时按同一流程发布后再更新依赖。
+本机的 `compose.override.yaml`、`composer.local.*`、`docker/local-kit.ini` 和 `LOCAL_KIT.md` 为忽略的本地文件，不会随普通提交或克隆自动带走。正式依赖已升级到已发布版本（以 `composer.lock` 为准）；继续开发新功能时按同一流程发布后再更新依赖。
 
 新机器需要自行配置本地覆盖。PHP 容器必须加载新 Kit、iframe 及 Demo 应用代码；Nginx 必须加载相同版本的发布资源。例如在已有 Compose 配置中合并以下挂载，保留原来的持久数据卷：
 
