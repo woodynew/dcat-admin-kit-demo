@@ -6492,16 +6492,16 @@
         },
         {
             "name": "woodynew/dcat-admin-kit",
-            "version": "0.2.0",
+            "version": "0.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/woodynew/dcat-admin-kit.git",
-                "reference": "598abd5abca6915f93dc58a7443c93f57a94c4ec"
+                "reference": "49ac1fdb875b3f8488eb0bf9d1ec752977da894c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/woodynew/dcat-admin-kit/zipball/598abd5abca6915f93dc58a7443c93f57a94c4ec",
-                "reference": "598abd5abca6915f93dc58a7443c93f57a94c4ec",
+                "url": "https://api.github.com/repos/woodynew/dcat-admin-kit/zipball/49ac1fdb875b3f8488eb0bf9d1ec752977da894c",
+                "reference": "49ac1fdb875b3f8488eb0bf9d1ec752977da894c",
                 "shasum": ""
             },
             "require": {
@@ -6552,9 +6552,9 @@
             ],
             "support": {
                 "issues": "https://github.com/woodynew/dcat-admin-kit/issues",
-                "source": "https://github.com/woodynew/dcat-admin-kit/tree/0.2.0"
+                "source": "https://github.com/woodynew/dcat-admin-kit/tree/0.2.2"
             },
-            "time": "2026-09-14T08:43:12+00:00"
+            "time": "2026-09-15T03:51:52+00:00"
         },
         {
             "name": "woodynew/dcat-laravel-admin",
