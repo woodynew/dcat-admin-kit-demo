@@ -15,16 +15,18 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->loadJsonTranslationsFrom(resource_path('translations'));
-        $features = array_fill_keys(array_keys(config('dcat-admin-kit.features', [])), false);
+        // Kit's own configuration is the site baseline for every request.
+        $features = config('dcat-admin-kit.features', []);
         $request = $this->app['request'];
         if ($request->is('admin/demo/preview', 'admin/demo/preview-form', 'admin/demo/preview-show/*')) {
+            // The comparison page flips only the switch under test; the rest of the
+            // baseline (grid_assets, locale_switcher) stays on, so a preview never
+            // regresses the styling every other page already shows.
             $feature = $request->query('feature');
             if (is_string($feature) && array_key_exists($feature, $features)) {
                 $features[$feature] = $request->query('enabled') === '1';
             }
         }
-        // Locale selection stays available across pages and feature previews.
-        $features['locale_switcher'] = (bool) config('dcat-admin-kit.features.locale_switcher', false);
         // All providers register before any provider boots; this precedes Kit's boot().
         config(['dcat-admin-kit.features' => $features]);
     }

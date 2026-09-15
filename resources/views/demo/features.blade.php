@@ -4,7 +4,7 @@
     <div class="demo-feature-grid">
         @foreach($features as $key => [$title, $notes, $target])
             @php($path = $target === 'preview-show' && $recordId ? $target.'/'.$recordId : ($target === 'preview-show' ? 'preview-form' : $target))
-            <article class="demo-feature-card" data-testid="feature-{{ $key }}"><span class="demo-card-kicker">{{ sprintf('%02d', $loop->iteration) }} / {{ __('默认关闭') }}</span><h3>{{ $title }}</h3><code>{{ $key }}</code><p>{{ $notes }}</p>
+            <article class="demo-feature-card" data-testid="feature-{{ $key }}"><span class="demo-card-kicker">{{ sprintf('%02d', $loop->iteration) }} / {{ config('dcat-admin-kit.features.'.$key) ? __('默认开启') : __('默认关闭') }}</span><h3>{{ $title }}</h3><code>{{ $key }}</code><p>{{ $notes }}</p>
                 <div class="demo-toggle-links" role="group" aria-label="{{ $title }} {{ __('对照') }}">
                     <a href="{{ admin_url('demo/'.$path).'?'.http_build_query(['feature' => $key, 'enabled' => 0]) }}" data-pjax="0" data-testid="feature-{{ $key }}-off">{{ __('关闭 · 原生') }}</a>
                     <a href="{{ admin_url('demo/'.$path).'?'.http_build_query(['feature' => $key, 'enabled' => 1]) }}" data-pjax="0" data-testid="feature-{{ $key }}-on">{{ __('开启 · Kit →') }}</a>

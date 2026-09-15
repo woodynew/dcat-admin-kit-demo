@@ -197,7 +197,8 @@
     "标签页实验室 ↗": "tab playground ↗",
     "后，在父容器中打开并复用同一条记录的详情。": "to open and reuse record details in the parent shell.",
     "默认关闭": "Off by default",
+    "默认开启": "On by default",
     "对照": "Comparison",
-    "其余预览开关保持关闭，语言选择器始终可用。": "Other preview switches remain off; the language selector stays available.",
+    "其余开关沿用站点配置，语言选择器始终可用。": "Other switches follow the site configuration; the language selector stays available.",
     "当前演示余额": "Current demo balance"
 }

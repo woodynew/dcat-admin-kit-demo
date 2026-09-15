@@ -290,6 +290,8 @@ test('8 个全局开关改变真实组件效果且不污染默认请求', async 
             feature: 'grid_defaults', path: '/admin/demo/preview', baseline: '/admin/demo/records',
             async check(enabled) {
                 const row = page.locator('#grid-table tbody tr').first();
+                // Site-wide grid_assets stays on outside its own comparison page.
+                await expect(page.locator('#grid-table thead th').first()).toHaveCSS('white-space', 'nowrap');
                 await expect(row.locator('.grid-row-checkbox')).toHaveCount(enabled ? 0 : 1);
                 await expect(row.locator('a').filter({ hasText: /^\s*显示\s*$/ })).toHaveCount(enabled ? 0 : 1);
                 await expect(row.locator('[data-action="delete"]')).toHaveCount(enabled ? 0 : 1);
@@ -349,14 +351,20 @@ test('8 个全局开关改变真实组件效果且不污染默认请求', async 
             },
         },
         {
-            feature: 'grid_assets', path: '/admin/demo/preview', baseline: '/admin/demo/records',
-            async check(enabled) {
+            // Enabled site-wide through config/dcat-admin-kit.php, so the plain pages carry it too.
+            feature: 'grid_assets', path: '/admin/demo/preview', baseline: '/admin/demo/records', baselineEnabled: true,
+            async check(enabled, onBaseline = false) {
                 await expect(page.locator('table.table-head-fixed')).toHaveCount(enabled ? 1 : 0);
                 for (const name of ['grid.css', 'grid.js', 'jquery.nicescroll.min.js']) {
                     await expect(kitAsset(name)).toHaveCount(enabled ? 1 : 0);
                 }
                 if (enabled) {
-                    await expect.poll(() => page.evaluate(() => window.jQuery('#grid-table').parent('.table-main').getNiceScroll().length)).toBe(1);
+                    // Header labels stay on one line instead of wrapping the row taller.
+                    await expect(page.locator('#grid-table thead th').first()).toHaveCSS('white-space', 'nowrap');
+                    // Only the wide-table layout has .table-main to host NiceScroll.
+                    if (! onBaseline) {
+                        await expect.poll(() => page.evaluate(() => window.jQuery('#grid-table').parent('.table-main').getNiceScroll().length)).toBe(1);
+                    }
                 }
             },
         },
@@ -374,7 +382,7 @@ test('8 个全局开关改变真实组件效果且不污染默认请求', async 
         },
     ];
 
-    for (const { feature, path, baseline, check } of cases) {
+    for (const { feature, path, baseline, baselineEnabled = false, check } of cases) {
         await test.step(feature, async () => {
             await page.goto(`${path}?feature=${feature}&enabled=0`);
             for (const enabled of [false, true, false]) {
@@ -386,7 +394,7 @@ test('8 个全局开关改变真实组件效果且不污染默认请求', async 
             }
             // A separate normal request must retain the default behavior.
             await page.goto(baseline);
-            await check(false);
+            await check(baselineEnabled, true);
         });
     }
 });
