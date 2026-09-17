@@ -23,7 +23,7 @@
         <p><code>dcat-admin-kit.features.{{ $feature }}</code> = <strong data-testid="actual-feature-value">{{ config('dcat-admin-kit.features.'.$feature) ? 'true' : 'false' }}</strong>. {{ __('其余开关沿用站点配置，语言选择器始终可用。') }}</p>
         <p>{{ __('表单和记录操作会保存到共享数据；离开对照页后恢复普通演示页面。') }}</p>
     </section>
-    <section class="demo-example-card"><h3>{{ __('已安装 Kit 的实际特性实现') }}</h3><p>{{ __('以下方法由当前安装的 Kit 0.1.0 源码直接提取，配置在所有 Provider boot 之前确定。') }}</p>
+    <section class="demo-example-card"><h3>{{ __('已安装 Kit 的实际特性实现') }}</h3><p>{{ __('以下方法由当前安装的 Kit 源码直接提取，配置在所有 Provider boot 之前确定。') }}</p>
         @include('demo.source', ['source' => \App\Support\DemoExamples::source($methodMap[$feature], \Woodynew\DcatAdminKit\Bootstrapper::class), 'sourceKey' => 'feature-implementation', 'sourceLabel' => 'Woodynew\DcatAdminKit\Bootstrapper::'.$methodMap[$feature]])
         <details><summary>{{ __('查看 Demo 当前请求的配置接入') }}</summary>@include('demo.source', ['source' => \App\Support\DemoExamples::source('register', \App\Providers\AppServiceProvider::class), 'sourceKey' => 'preview-config', 'sourceLabel' => 'AppServiceProvider::register'])</details>
     </section>

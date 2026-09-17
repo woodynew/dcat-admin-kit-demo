@@ -35,6 +35,34 @@ final class DemoExamples
 
     public const BASE_DOCS_URL = 'https://learnku.com/docs/dcat-admin/2.x';
 
+    /**
+     * 当前实际加载的 Kit 版本。
+     *
+     * 以包内 version.php 的最后一个键为准，而不是 Composer 的 installed.json：
+     * 本机开发时 Kit 源码是挂载进来的，installed.json 仍停留在镜像构建时的版本，
+     * 两者会不一致。Dcat 的 VersionManager 读取的也是 version.php。
+     */
+    public static function kitVersion(): string
+    {
+        static $version;
+
+        if ($version === null) {
+            $version = (string) array_key_last(
+                require base_path('vendor/woodynew/dcat-admin-kit/version.php')
+            );
+        }
+
+        return $version;
+    }
+
+    /**
+     * 当前加载的 Dcat 基座版本，直接取核心包常量。
+     */
+    public static function dcatVersion(): string
+    {
+        return \Dcat\Admin\Admin::VERSION;
+    }
+
     public static function features(): array
     {
         return [
@@ -195,7 +223,7 @@ final class DemoExamples
 
     public static function wideGridLayout(Grid $grid): void
     {
-        // Native fixed-table layout supplies the .table-main required by Kit 0.1.0.
+        // Native fixed-table layout supplies the .table-main that the Kit grid assets attach to.
         // Zero fixed columns keeps one real table; both preview states use this layout.
         // height() 给容器一个固定高度，让宽表同时出现横向和纵向滚动条，
         // 用来检查两条滚动条的暗色适配。

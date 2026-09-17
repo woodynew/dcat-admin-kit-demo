@@ -47,8 +47,8 @@
             <p class="demo-panel-note">原生 Dcat 布局 / 中文说明 / 精确源码</p>
         </aside>
         <section class="demo-landing-links" aria-label="项目资源">
-            <a href="{{ \App\Support\DemoExamples::REPOSITORY_URL }}" target="_blank" rel="noopener noreferrer"><strong>Dcat Admin Kit ↗</strong><span>通用扩展包 · 0.1.0</span></a>
-            <a href="https://github.com/woodynew/dcat-admin" target="_blank" rel="noopener noreferrer"><strong>Dcat Laravel Admin ↗</strong><span>后台基础 · 2.2.4</span></a>
+            <a href="{{ \App\Support\DemoExamples::REPOSITORY_URL }}" target="_blank" rel="noopener noreferrer"><strong>Dcat Admin Kit ↗</strong><span>通用扩展包 · {{ \App\Support\DemoExamples::kitVersion() }}</span></a>
+            <a href="https://github.com/woodynew/dcat-admin" target="_blank" rel="noopener noreferrer"><strong>Dcat Laravel Admin ↗</strong><span>后台基础 · {{ \App\Support\DemoExamples::dcatVersion() }}</span></a>
             <a href="{{ \App\Support\DemoExamples::BASE_DOCS_URL }}" target="_blank" rel="noopener noreferrer"><strong>Dcat 基础文档 ↗</strong><span>Grid / Form / Show</span></a>
         </section>
     </main>

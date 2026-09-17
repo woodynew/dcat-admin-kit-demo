@@ -21,5 +21,5 @@
         @endforeach
     </div>
     <div class="demo-notice"><strong>{{ __('共享空间 · 真实保存') }}</strong><p>{{ __('你的修改对所有访客可见，数据每小时重置。复制记录会重新生成编码，演示余额不代表真实资金。全局特性预览只影响当前请求。') }}</p></div>
-    <div class="demo-resource-links"><a href="{{ \App\Support\DemoExamples::REPOSITORY_URL }}" target="_blank" rel="noopener noreferrer">Kit GitHub ↗</a><a href="{{ \App\Support\DemoExamples::DOCS_URL }}" target="_blank" rel="noopener noreferrer">{{ __('Kit 组件文档 ↗') }}</a><a href="{{ \App\Support\DemoExamples::DEMO_URL }}/blob/main/README.md" target="_blank" rel="noopener noreferrer">{{ __('演示使用指南 ↗') }}</a><span>Dcat 2.2.4 · Kit 0.1.0 · Laravel {{ app()->version() }}</span></div>
+    <div class="demo-resource-links"><a href="{{ \App\Support\DemoExamples::REPOSITORY_URL }}" target="_blank" rel="noopener noreferrer">Kit GitHub ↗</a><a href="{{ \App\Support\DemoExamples::DOCS_URL }}" target="_blank" rel="noopener noreferrer">{{ __('Kit 组件文档 ↗') }}</a><a href="{{ \App\Support\DemoExamples::DEMO_URL }}/blob/main/README.md" target="_blank" rel="noopener noreferrer">{{ __('演示使用指南 ↗') }}</a><span>Dcat {{ \App\Support\DemoExamples::dcatVersion() }} · Kit {{ \App\Support\DemoExamples::kitVersion() }} · Laravel {{ app()->version() }}</span></div>
 </div>
