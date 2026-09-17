@@ -14,8 +14,8 @@
     </div>
     <div class="demo-live-example" data-testid="live-example">{!! $example !!}</div>
     @if($feature === 'grid_assets')
-        <section class="demo-example-card"><h3>{{ __('真实横向滚动布局') }}</h3>
-            <p>{{ __('本例在开启和关闭状态都使用 Dcat 原生宽表布局。关闭时使用浏览器滚动条，开启后 Kit 在表格的 .table-main 容器创建 NiceScroll。可横向滚动查看右侧完整链接与描述。') }}</p>
+        <section class="demo-example-card"><h3>{{ __('真实横纵滚动布局') }}</h3>
+            <p>{{ __('本例在开启和关闭状态都使用 Dcat 原生宽表布局，并固定 320px 高度。关闭时使用浏览器滚动条，开启后 Kit 在表格的 .table-main 容器创建 NiceScroll。横向可滚动查看右侧完整链接与描述，纵向可滚动查看全部记录；切换顶部亮/暗主题即可对照两条滚动条的暗色适配。') }}</p>
             @include('demo.source', ['source' => \App\Support\DemoExamples::source('wideGridLayout'), 'sourceKey' => 'wide-grid-layout', 'sourceLabel' => 'DemoExamples::wideGridLayout'])
         </section>
     @endif

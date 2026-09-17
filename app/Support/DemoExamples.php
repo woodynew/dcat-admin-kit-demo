@@ -44,7 +44,7 @@ final class DemoExamples
             'right_side_filter' => [__('右侧筛选器'), __('点击「筛选」查看收起的右侧滑出面板。'), 'preview'],
             'top_form_tools' => [__('表单顶部工具'), __('顶部出现原生「返回」「提交」工具；提交会实际保存。'), 'preview-form'],
             'back_to_top' => [__('回到顶部'), __('向下滚动超过半屏，右下角出现回到顶部按钮。'), 'preview'],
-            'grid_assets' => [__('表格滚动增强'), __('固定表头样式、表格尺寸调整与本地 NiceScroll 横向滚动条。'), 'preview'],
+            'grid_assets' => [__('表格滚动增强'), __('固定表头样式、表格尺寸调整与本地 NiceScroll 横纵滚动条。'), 'preview'],
             'global_styles' => [__('全局布局样式'), __('观察侧栏、导航、内容区、表格及页脚的 Kit 样式变化。'), 'preview'],
         ];
     }
@@ -197,7 +197,9 @@ final class DemoExamples
     {
         // Native fixed-table layout supplies the .table-main required by Kit 0.1.0.
         // Zero fixed columns keeps one real table; both preview states use this layout.
-        $grid->fixColumns(0, 0);
+        // height() 给容器一个固定高度，让宽表同时出现横向和纵向滚动条，
+        // 用来检查两条滚动条的暗色适配。
+        $grid->fixColumns(0, 0)->height(320);
         $grid->column('url', __('完整链接'))->display(fn ($value) => e($value))
             ->setAttributes(['style' => 'min-width: 360px']);
         $grid->column('description', __('完整描述'))->display(fn ($value) => e($value))

@@ -14,6 +14,10 @@ return array_replace_recursive($config, [
         'prefix' => 'admin',
         'middleware' => ['web', DemoAccess::class, 'admin'],
     ],
+    'layout' => [
+        // 顶栏的亮/暗主题切换按钮，Dcat 核心负责切换与 localStorage 记忆。
+        'dark_mode_switch' => true,
+    ],
     'auth' => ['controller' => AuthController::class],
     'helpers' => ['enable' => false],
 ]);
