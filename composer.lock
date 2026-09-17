@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e3f51f6362f8acc25c84879ce131434b",
+    "content-hash": "5d6f40c764947b838f3a9fac5f00cc9c",
     "packages": [
         {
             "name": "box/spout",
@@ -6492,16 +6492,16 @@
         },
         {
             "name": "woodynew/dcat-admin-kit",
-            "version": "0.2.2",
+            "version": "0.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/woodynew/dcat-admin-kit.git",
-                "reference": "49ac1fdb875b3f8488eb0bf9d1ec752977da894c"
+                "reference": "38866d0d48a403225ccc9d3cfa3f9f38737abf93"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/woodynew/dcat-admin-kit/zipball/49ac1fdb875b3f8488eb0bf9d1ec752977da894c",
-                "reference": "49ac1fdb875b3f8488eb0bf9d1ec752977da894c",
+                "url": "https://api.github.com/repos/woodynew/dcat-admin-kit/zipball/38866d0d48a403225ccc9d3cfa3f9f38737abf93",
+                "reference": "38866d0d48a403225ccc9d3cfa3f9f38737abf93",
                 "shasum": ""
             },
             "require": {
@@ -6552,9 +6552,9 @@
             ],
             "support": {
                 "issues": "https://github.com/woodynew/dcat-admin-kit/issues",
-                "source": "https://github.com/woodynew/dcat-admin-kit/tree/0.2.2"
+                "source": "https://github.com/woodynew/dcat-admin-kit/tree/0.2.3"
             },
-            "time": "2026-09-15T03:51:52+00:00"
+            "time": "2026-09-17T03:26:41+00:00"
         },
         {
             "name": "woodynew/dcat-laravel-admin",
@@ -6627,16 +6627,16 @@
         },
         {
             "name": "woodynew/z-dcat-iframe-tab",
-            "version": "1.3.0",
+            "version": "1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/woodynew/dcat-iframe-tab.git",
-                "reference": "d3fb74e8ff6b7e0dcf0043c25b0d0c80388539c2"
+                "reference": "dcdb282ae89c5d2e04c22d0d37d6080749f6f703"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/woodynew/dcat-iframe-tab/zipball/d3fb74e8ff6b7e0dcf0043c25b0d0c80388539c2",
-                "reference": "d3fb74e8ff6b7e0dcf0043c25b0d0c80388539c2",
+                "url": "https://api.github.com/repos/woodynew/dcat-iframe-tab/zipball/dcdb282ae89c5d2e04c22d0d37d6080749f6f703",
+                "reference": "dcdb282ae89c5d2e04c22d0d37d6080749f6f703",
                 "shasum": ""
             },
             "require": {
@@ -6674,9 +6674,9 @@
             ],
             "description": "iframe-tab framework for dcat-admin",
             "support": {
-                "source": "https://github.com/woodynew/dcat-iframe-tab/tree/1.3.0"
+                "source": "https://github.com/woodynew/dcat-iframe-tab/tree/1.3.1"
             },
-            "time": "2026-09-14T08:43:44+00:00"
+            "time": "2026-09-17T03:29:13+00:00"
         }
     ],
     "packages-dev": [
