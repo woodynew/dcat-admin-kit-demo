@@ -34,7 +34,7 @@
                 <span class="demo-dot"></span>
                 <div><strong>这是一个所有访客共享的演示空间</strong>
                     <p>修改会实际保存并对其他访客可见，每小时重置。请使用演示内容。</p>
-                    <p>最近重置：<time data-testid="last-reset-at">{{ $lastResetAt ?: '尚未初始化' }}</time></p>
+                    <p>最近重置：<time data-testid="last-reset-at">{{ \App\Support\DemoExamples::dateTime($lastResetAt) ?: '尚未初始化' }}</time></p>
                 </div>
             </div>
         </div>

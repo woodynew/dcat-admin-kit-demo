@@ -10,7 +10,7 @@
     <div class="demo-metrics">
         <div><span>{{ __('共享记录') }}</span><strong data-testid="record-count">{{ $recordCount }} <small>/ 200</small></strong></div>
         <div><span>{{ __('操作日志') }}</span><strong>{{ $logCount }} <small>/ 500</small></strong></div>
-        <div class="demo-reset-metric"><span>{{ __('最近重置 · 每小时自动重置') }}</span><strong data-testid="last-reset-at">{{ $lastResetAt ?: __('尚未初始化') }}</strong></div>
+        <div class="demo-reset-metric"><span>{{ __('最近重置 · 每小时自动重置') }}</span><strong data-testid="last-reset-at">{{ \App\Support\DemoExamples::dateTime($lastResetAt) ?: __('尚未初始化') }}</strong></div>
     </div>
     <div class="demo-section-heading"><h3>{{ __('按场景探索') }}</h3><span>{{ __('每个示例都包含参数、说明与实际源码') }}</span></div>
     <div class="demo-catalog-grid">

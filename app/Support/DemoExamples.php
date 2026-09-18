@@ -11,6 +11,7 @@ use App\Services\DemoData;
 use Dcat\Admin\Form;
 use Dcat\Admin\Grid;
 use Dcat\Admin\Show;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use ReflectionClass;
 use ReflectionMethod;
@@ -61,6 +62,18 @@ final class DemoExamples
     public static function dcatVersion(): string
     {
         return \Dcat\Admin\Admin::VERSION;
+    }
+
+    /**
+     * 展示给访客的日期统一成 yyyy-mm-dd h:i:s。
+     *
+     * Grid/Show 拿到的是 Carbon，默认会被序列化成 2026-09-18T01:14:49.289048Z；
+     * 重置时间在 demo_states 里是 ISO8601 字符串。两者都先解析再格式化，
+     * 传入空值时返回 null，交给调用方决定占位文案。
+     */
+    public static function dateTime(mixed $value): ?string
+    {
+        return $value ? Carbon::parse($value)->format('Y-m-d H:i:s') : null;
     }
 
     public static function features(): array
@@ -204,7 +217,8 @@ final class DemoExamples
             $grid->column('code', __('唯一编码'))->display(fn ($value) => e($value));
             $grid->column('status', __('启用状态'))->switch('', true);
             $grid->column('balance', __('演示余额'))->display(fn ($value) => e($value));
-            $grid->column('updated_at', __('更新时间'));
+            // Dcat 会把回调绑定到当前行模型上，这里用类名而不是 self::，避免作用域被改写。
+            $grid->column('updated_at', __('更新时间'))->display(fn ($value) => DemoExamples::dateTime($value));
             $grid->filter(function (Grid\Filter $filter) {
                 $filter->like('title', __('标题'));
                 $filter->equal('status', __('启用状态'))->select([1 => __('启用'), 0 => __('停用')]);
@@ -324,8 +338,10 @@ final class DemoExamples
             $show->field('description', __('描述'))->as(fn ($value) => e($value));
             $show->field('status', __('启用状态'))->as(fn ($value) => $value ? __('启用') : __('停用'));
             $show->field('balance', __('演示余额'));
-            $show->field('created_at', __('创建时间'));
-            $show->field('updated_at', __('更新时间'));
+            // ShowField::render() 用 Closure::call()，会把作用域一并改成模型类，self:: 会解析到
+            // 模型上；Dcat 的 Grid 只改 $this 不改作用域。统一写类名，两处行为一致。
+            $show->field('created_at', __('创建时间'))->as(fn ($value) => DemoExamples::dateTime($value));
+            $show->field('updated_at', __('更新时间'))->as(fn ($value) => DemoExamples::dateTime($value));
         });
     }
 
@@ -344,7 +360,7 @@ final class DemoExamples
     {
         $rows = DemoLog::query()->orderByDesc('id')->limit(12)->get()
             ->map(fn (DemoLog $log) => [
-                e($log->created_at), e($log->action), e($log->demo_record_id ?? '—'), e($log->message),
+                e(DemoExamples::dateTime($log->created_at)), e($log->action), e($log->demo_record_id ?? '—'), e($log->message),
             ])->all();
 
         return new PostTable([__('时间'), __('操作'), __('记录'), __('结果 / 消息')], $rows);
