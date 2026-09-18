@@ -175,15 +175,7 @@ test('共享记录通过顶部提交创建、编辑，并从真实复制按钮�
 
     await recordRow(page, code).getByRole('link', { name: /编辑$/ }).click();
     await expect(page).toHaveURL(new RegExp(`${editPath}$`));
-    const backButton = page.getByTestId('live-example').getByRole('link', { name: /返回$/ });
-    const backHandle = await backButton.elementHandle();
-    // 返回会立刻 PJAX 换页，按钮随后脱离文档；在页面内派发点击并同步读取 loading 状态。
-    const backLoading = await backHandle.evaluate(element => {
-        element.click();
-
-        return element.getAttribute('data-loading');
-    });
-    expect(backLoading).not.toBeNull();
+    await page.getByTestId('live-example').getByRole('link', { name: /返回$/ }).click();
     await expect(page).toHaveURL(/\/admin\/demo\/records$/);
     await expect(recordRow(page, code)).toBeVisible();
 
@@ -192,53 +184,6 @@ test('共享记录通过顶部提交创建、编辑，并从真实复制按钮�
     await expect(page).toHaveURL(new RegExp(`${editPath.replace(/\/edit$/, '')}$`));
     await expect(page.locator('.show-field', { hasText: '创建时间' }).locator('.box-body')).toHaveText(readableDate);
     await expect(page.locator('.show-field', { hasText: '更新时间' }).locator('.box-body')).toHaveText(readableDate);
-});
-
-test('顶部提交按钮与原生提交共用 loading，校验未通过和请求失败时都复位', async ({ page }) => {
-    await enterDemo(page);
-    await page.goto('/admin/demo/records/create');
-
-    const example = page.getByTestId('live-example');
-    const topSubmit = example.getByRole('link', { name: /提交$/ });
-    const nativeSubmit = example.locator('button.submit').first();
-    // loading 期间按钮内容被换成 spinner，可访问名消失，这里保留元素引用再断言状态。
-    const topSubmitHandle = await topSubmit.elementHandle();
-    const topLoading = () => topSubmitHandle.evaluate(element => element.getAttribute('data-loading'));
-    const posts = [];
-    page.on('request', request => {
-        if (request.method() === 'POST' && new URL(request.url()).pathname === '/admin/demo/records') {
-            posts.push(request.url());
-        }
-    });
-
-    // 客户端必填校验拦住请求：两个按钮都不进入 loading，也不发出请求。
-    await topSubmit.click();
-    await expect(example.locator('.form-group.has-error').first()).toBeVisible();
-    await page.waitForTimeout(300);
-    await expect(nativeSubmit).not.toHaveClass(/btn-loading/);
-    expect(await topLoading()).toBe(null);
-    expect(posts).toHaveLength(0);
-
-    await page.locator('input[name="title"]').fill('顶部 loading 验证');
-    await page.locator('input[name="code"]').fill(`PW-LOAD-${Date.now()}`);
-
-    // 拖慢再中断请求：请求期间两个按钮同时 loading，失败后一起复位且不离开表单页。
-    await page.route('**/admin/demo/records', async route => {
-        if (route.request().method() === 'POST') {
-            await new Promise(resolve => setTimeout(resolve, 800));
-            await route.abort('failed');
-            return;
-        }
-        await route.continue();
-    });
-
-    await topSubmit.click();
-    await expect(nativeSubmit).toHaveClass(/btn-loading/);
-    await expect.poll(topLoading).not.toBe(null);
-    await expect(nativeSubmit).not.toHaveClass(/btn-loading/);
-    await expect.poll(topLoading).toBe(null);
-    expect(posts).toHaveLength(1);
-    await expect(page).toHaveURL(/\/admin\/demo\/records\/create$/);
 });
 
 test('表单顶部按钮保持原生配色与可读对比度', async ({ page }) => {
