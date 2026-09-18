@@ -276,13 +276,13 @@ class DemoBackendTest extends TestCase
         $response = $this->guardRequest('POST', 'dcat-api/form', $input);
         $payload = json_decode($response->getContent(), true);
         $this->assertSame(['id' => $id, 'action' => 'balance'], json_decode($payload['_payload_'], true));
-        $this->assertSame('/admin/demo/actions', $payload['_current_']);
+        $this->assertLocalReturnUrl($payload['_current_'], '/admin/demo/actions');
         $request = Request::create('/admin/dcat-api/form?_current_=https://evil.example/', 'POST', $input);
         $route = new RoutingRoute(['POST'], 'admin/dcat-api/form', fn () => null);
         $route->name(admin_api_route_name('form'));
         $request->setRouteResolver(fn () => $route);
         app(DemoAccess::class)->handle($request, function (Request $request) {
-            $this->assertSame('/admin/demo/actions', $request->get(Form::CURRENT_URL_NAME));
+            $this->assertLocalReturnUrl($request->get(Form::CURRENT_URL_NAME), '/admin/demo/actions');
 
             return response('ok');
         });
@@ -294,7 +294,7 @@ class DemoBackendTest extends TestCase
         $this->assertGuardRejected('GET', 'dcat-api/render', ['renderable' => 'Dcat_Admin_Grid_LazyRenderable'], 403);
         $render = $this->guardRequest('GET', 'dcat-api/render', ['renderable' => 'App_Admin_Forms_BalanceForm', 'id' => $id, 'action' => 'balance', '_current_' => 'https://evil.example/']);
         $this->assertSame(200, $render->getStatusCode());
-        $this->assertSame('/admin/demo/actions', json_decode($render->getContent(), true)['_current_']);
+        $this->assertLocalReturnUrl(json_decode($render->getContent(), true)['_current_'], '/admin/demo/actions');
         $this->assertSame(200, $this->guardRequest('POST', 'dcat-api/form', ['_form_' => 'App\\Admin\\Forms\\BulkNoticeForm', 'content' => '测试通知', 'action' => 'notice'])->getStatusCode());
     }
 
@@ -398,6 +398,14 @@ class DemoBackendTest extends TestCase
         } catch (HttpException $exception) {
             $this->assertSame($status, $exception->getStatusCode(), $path);
         }
+    }
+
+    private function assertLocalReturnUrl(string $url, string $path): void
+    {
+        // Dcat 会把 _current_ 再交给 admin_url()：值必须是完整 URL，带 admin 前缀的
+        // 相对路径会被二次拼接成 /admin/admin/...，保存后跳到 404。
+        $this->assertSame('http', parse_url($url, PHP_URL_SCHEME));
+        $this->assertSame($path, parse_url($url, PHP_URL_PATH));
     }
 
     private function assertValidation(callable $operation, string $field): void

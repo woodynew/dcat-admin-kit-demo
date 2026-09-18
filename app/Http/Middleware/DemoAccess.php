@@ -70,7 +70,7 @@ class DemoAccess
             abort_unless(is_string($class) && str_replace('_', '\\', $class) === 'App\\Admin\\Forms\\BalanceForm', 403, '该懒加载组件不在演示白名单中。');
             $this->allowFields($request, ['renderable', '_trans_', 'id', 'action', '_token', '_pjax', '_', Form::CURRENT_URL_NAME]);
             // LazyWidget includes the source URL while rendering. Keep its return target local.
-            $request->query->set(Form::CURRENT_URL_NAME, '/'.$prefix.'/demo/actions');
+            $request->query->set(Form::CURRENT_URL_NAME, admin_url('demo/actions'));
             if ($request->has('_trans_')) {
                 abort_unless(is_string($request->get('_trans_')) && preg_match('/^[A-Za-z0-9_.-]{0,120}$/', $request->get('_trans_')), 403);
             }
@@ -82,8 +82,11 @@ class DemoAccess
         if (! $request->isMethodSafe()) {
             // Dcat uses Request::get(), where query parameters precede the body.
             // Remove query overrides before setting a local return path.
+            // Dcat 会在 getCurrentUrl() 里对该值再执行一次 admin_url()，因此这里必须是完整
+            // URL：写成 /admin/demo/records 这类已带前缀的路径会被二次拼接成
+            // /admin/admin/demo/records，保存后跳转 404。
             $request->query->remove(Form::CURRENT_URL_NAME);
-            $request->merge([Form::CURRENT_URL_NAME => '/'.$prefix.'/demo/'.($path === 'dcat-api/form' ? 'actions' : 'records')]);
+            $request->merge([Form::CURRENT_URL_NAME => admin_url($path === 'dcat-api/form' ? 'demo/actions' : 'demo/records')]);
             $key = 'demo-writes:'.hash('sha256', (string) $request->ip());
             if (RateLimiter::tooManyAttempts($key, 30)) {
                 return response()->json(['message' => '操作过于频繁，每个 IP 每分钟最多写入 30 次。'], 429)
