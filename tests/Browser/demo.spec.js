@@ -293,6 +293,50 @@ test('真实 iframe 容器打开、复用并关闭记录标签', async ({ page }
     await expect(actions.getByTestId('demo-actions')).toBeVisible();
 });
 
+test('iframe 刷新保留多个标签、当前页面和首页选择', async ({ page }) => {
+    await enterDemo(page);
+    await page.goto('/admin/demo/tabs');
+    const tabs = page.locator('#iframe-tab .nav-link');
+    const active = page.locator('#iframe-tab .nav-link.active');
+    const homeTab = page.locator('#iframe-tab .nav-link[data-first="1"]');
+    const actions = page.frameLocator('#iframe-tabContent .tab-pane.active iframe');
+    const links = actions.getByRole('link', { name: '标签详情', exact: true });
+    const target = await links.first().getAttribute('data-to-url');
+    await links.first().click();
+    const selected = await active.getAttribute('id');
+    await homeTab.click();
+    await links.nth(1).click();
+    await page.locator(`[id="${selected}"]`).click();
+    const order = await tabs.evaluateAll(nodes => nodes.map(node => node.id));
+    expect(order).toHaveLength(3);
+
+    for (let i = 0; i < 2; i++) {
+        await page.reload();
+        await expect(tabs).toHaveCount(3);
+        expect(await tabs.evaluateAll(nodes => nodes.map(node => node.id))).toEqual(order);
+        await expect(active).toHaveCount(1);
+        await expect(active).toHaveAttribute('id', selected);
+        await expect(page.locator('#iframe-tabContent iframe')).toHaveCount(1);
+        await expect(page.locator('#iframe-tabContent .tab-pane.active iframe')).toHaveAttribute('src', target);
+        await expect(actions.locator('section.content-header')).toContainText('记录详情');
+    }
+
+    await homeTab.click();
+    await page.reload();
+    await expect(active).toHaveAttribute('data-first', '1');
+    await expect(actions.getByTestId('demo-actions')).toBeVisible();
+    await expect(tabs).toHaveCount(3);
+    await tabs.nth(2).hover();
+    await tabs.nth(2).locator('.iframe-tab-close-btn').click();
+    await tabs.nth(1).click();
+    await active.hover();
+    await active.locator('.iframe-tab-close-btn').click();
+    await page.reload();
+    await expect(tabs).toHaveCount(1);
+    await expect(active).toHaveAttribute('data-first', '1');
+    await expect(actions.getByTestId('demo-actions')).toBeVisible();
+});
+
 test('8 个全局开关改变真实组件效果且不污染默认请求', async ({ page }) => {
     test.setTimeout(180_000);
     await enterDemo(page);

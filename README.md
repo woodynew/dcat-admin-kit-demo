@@ -62,6 +62,8 @@ php artisan serve --host=127.0.0.1 --port=18084
 
 Demo 的 `config/dcat-admin-kit.php` 整站启用了 `features.grid_assets` 与 `features.locale_switcher`，其余开关保持关闭：表格滚动增强由 Kit 的资源统一提供，应用不另写样式补丁。「全局特性」对照页在站点基线之上只翻转当前选中的那一个开关，已开启的开关不会在预览时被关掉。
 
+`config/iframe_tab.php` 已启用标签缓存。iframe 扩展 `1.3.4+` 支持浏览器刷新后恢复标签顺序和当前选择，并只加载当前页面；未提交表单不保留。右键刷新也支持恢复后尚未加载的标签，且不切换当前选择或重载其他页面。
+
 ## 多语言开发
 
 进入后台后，通过右上角选择框切换语言。Demo 已启用 `features.locale_switcher`，选择保存在各访客 Session 中；菜单、导航、页面标题、字段、组件说明、提示及 iframe 菜单跟随切换。共享记录、日志、固定转义测试样例和显示的实际源码保留原文，公开欢迎页目前为中文。
