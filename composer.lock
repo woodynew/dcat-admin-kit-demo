@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "583186dcbf92da80e2342d7cc84246fa",
+    "content-hash": "33c5f911b198964024299e19f6a8e86d",
     "packages": [
         {
             "name": "box/spout",
@@ -6492,16 +6492,16 @@
         },
         {
             "name": "woodynew/dcat-admin-kit",
-            "version": "0.2.5",
+            "version": "0.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/woodynew/dcat-admin-kit.git",
-                "reference": "e9207779eb13798e33c020b1b4dae395560d816d"
+                "reference": "ab95893c36912ab6ada81e8b1babb8e6f0c8a514"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/woodynew/dcat-admin-kit/zipball/e9207779eb13798e33c020b1b4dae395560d816d",
-                "reference": "e9207779eb13798e33c020b1b4dae395560d816d",
+                "url": "https://api.github.com/repos/woodynew/dcat-admin-kit/zipball/ab95893c36912ab6ada81e8b1babb8e6f0c8a514",
+                "reference": "ab95893c36912ab6ada81e8b1babb8e6f0c8a514",
                 "shasum": ""
             },
             "require": {
@@ -6552,10 +6552,10 @@
             ],
             "support": {
                 "issues": "https://github.com/woodynew/dcat-admin-kit/issues",
-                "source": "https://github.com/woodynew/dcat-admin-kit/tree/0.2.5"
+                "source": "https://github.com/woodynew/dcat-admin-kit/tree/0.2.6"
             },
-            "time": "2026-11-15T12:15:11+00:00",
-            "published-time": "2026-11-15T12:17:42+00:00"
+            "time": "2026-11-16T15:46:02+00:00",
+            "published-time": "2026-11-16T15:46:34+00:00"
         },
         {
             "name": "woodynew/dcat-laravel-admin",

@@ -69,7 +69,7 @@ app('translator')->addLines([
 
 不要将右侧值写成固定中文后注册到当前 locale；那会让英文页面继续显示中文。菜单只在渲染时翻译，无需改数据库菜单记录，也不要在切换语言时批量改写用户或业务数据。
 
-Demo 的特性预览以 `config/dcat-admin-kit.php` 为站点基线，只翻转当前比较的那一个开关；站点已开启的 `grid_assets`、`locale_switcher` 在预览页保持开启。新增预览逻辑时不要把已开启的开关一起关掉，否则对比页会退回未定制的样式。
+Demo 的特性预览以 `config/dcat-admin-kit.php` 为站点基线，只翻转当前比较的那一个开关；站点已开启 `grid_assets`、`locale_switcher` 和 `global_styles`，比较其他特性时保留这些开关。全局布局用于覆盖与业务项目相同的 iframe 标签居中、紧凑间距和顶部边框组合。新增预览逻辑时不要把无关的基线开关一起关掉。
 
 ## 前端文案和布局
 

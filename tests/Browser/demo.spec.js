@@ -59,6 +59,40 @@ test('首页使用 CSRF POST 一键进入受限演示', async ({ page }) => {
     await expect(page.locator('body')).toContainText('演示访客');
 });
 
+test('Kit 全局布局下 iframe 标签居中且上边框不被 Header 遮挡', async ({ page }) => {
+    await enterDemo(page);
+    await page.goto('/admin/demo/tabs');
+    await expect(page.locator('link[href*="/css/global.css"]')).toHaveCount(1);
+    await page.getByTestId('tabs-menu-records').click();
+    for (const dark of [false, true]) {
+        if (await page.locator('body').evaluate(node => node.classList.contains('dark-mode')) !== dark) {
+            await page.locator('.dark-mode-switcher').click();
+        }
+        await page.locator('#iframe-tab .nav-link').evaluateAll(async nodes => {
+            await Promise.all(nodes.flatMap(node => node.getAnimations().map(animation => animation.finished)));
+        });
+        const layout = await page.locator('#iframe-tab-container').evaluate(bar => {
+            const bounds = bar.getBoundingClientRect();
+            const header = document.querySelector('.header-navbar').getBoundingClientRect();
+            const border = parseFloat(getComputedStyle(bar).borderTopWidth);
+            return { headerBottom: header.bottom, top: bounds.top, border, borderStyle: getComputedStyle(bar).borderTopStyle,
+                tabs: [...bar.querySelectorAll('.nav-link')].map(node => {
+                    const rect = node.getBoundingClientRect();
+                    return { top: rect.top - bounds.top, bottom: bounds.bottom - rect.bottom,
+                        marginBottom: getComputedStyle(node).marginBottom, paddingLeft: getComputedStyle(node).paddingLeft };
+                }) };
+        });
+        expect(layout.top).toBeGreaterThanOrEqual(layout.headerBottom);
+        expect(layout.border).toBeGreaterThan(0);
+        expect(layout.borderStyle).toBe('solid');
+        for (const tab of layout.tabs) {
+            expect(Math.abs(tab.top - tab.bottom)).toBeLessThanOrEqual(1);
+            expect(tab.marginBottom).toBe('0px');
+            expect(tab.paddingLeft).toBe('10px');
+        }
+    }
+});
+
 test('列别名实际复制、生成二维码、展开和弹窗，并在 PJAX 返回后继续工作', async ({ page, context }) => {
     await context.grantPermissions(['clipboard-read', 'clipboard-write']);
     await enterDemo(page);
@@ -430,7 +464,7 @@ test('8 个全局开关改变真实组件效果且不污染默认请求', async 
             },
         },
         {
-            feature: 'global_styles', path: '/admin/demo/preview', baseline: '/admin/demo/records',
+            feature: 'global_styles', path: '/admin/demo/preview', baseline: '/admin/demo/records', baselineEnabled: true,
             async check(enabled) {
                 await expect(kitAsset('global.css')).toHaveCount(enabled ? 1 : 0);
                 if (enabled) {
